@@ -17,12 +17,17 @@
           , n = (i("fbe0"),
         i("4ae5"),
         function(e, t, i) {
-            var n = 0
+            var o = ["排队中", "不要离开", "拼命抢购中"]
+              , n = 0
               , s = e.sessionId;
             function d(e) {
                 var t = getCurrentPages()
                   , i = t[t.length - 1].route
                   , a = i.includes("/confirm/confirm");
+                a && uni.showLoading({
+                    title: o[Math.floor(3 * Math.random())] || "排队中",
+                    mask: !0
+                }),
                 r.default.ajax({
                     url: "/order/coreOrder",
                     method: "POST",
@@ -60,11 +65,11 @@
                   , s = getCurrentPages()
                   , d = s[s.length - 1].route
                   , p = d.includes("/confirm/confirm");
-                uni.showToast({
-                    title: n,
-                    icon: "none"
-                })
                 n++,
+                n > 1 && p && uni.showLoading({
+                    title: "正在为您下单",
+                    mask: !0
+                }),
                 r.default.ajax({
                     url: "/order/getOrderResult",
                     method: "POST",
@@ -110,6 +115,10 @@
                     }
                 })
             }
+            uni.showLoading({
+                title: o[2],
+                mask: !0
+            }),
             r.default.ajax({
                 url: "/order/order",
                 method: "POST",
@@ -120,14 +129,23 @@
                 eventId: s,
                 secret: !0,
                 success: function(e) {
-                    var a = e.data.result
-                    setTimeout(function() {
+                    var i = e.data
+                      , o = i.state
+                      , a = i.result
+                      , r = i.msg;
+                    o && 1 == o && a ? a.orderId ? (t && t(a),
+                    uni.hideLoading()) : a.coreOrderKey ? setTimeout((function() {
                         d(a.coreOrderKey)
-                    }, 1000 * a.sleep)
+                    }
+                    ), a.sleep ? 1e3 * a.sleep : 800) : setTimeout((function() {
+                        c(a.orderJobKey, s)
+                    }
+                    ), 800) : uni.showToast({
+                        title: r || "订单生成失败",
+                        icon: "none"
+                    })
                 },
-                fail: function() {
-                    uni.hideLoading()
-                },
+                fail: function() {},
                 complete: function() {}
             })
         }
@@ -137,56 +155,47 @@
     "09b5": function(e, t) {
         e.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeBAMAAADJHrORAAAAD1BMVEX29vbw8PDz8/P////5+fkTLnPGAAAAhklEQVQY012R0RGEMAhEceYagApCKjjHBkz/TRmzLKj8vXnZJIAcd52u2rvMWrzpLGvkcaOn/+vSnd4XGj20BspMI96CoY0+bku/f3zEieLQRgZq+oy3pzdgevJPAt+sxRvyyaPy9V+r96p91AFvyaN8zcvZL+dZ88IB+NyHKT33RY99dgYuUX4fqMe9BdcAAAAASUVORK5CYII="
     },
-    1708: function(e, t, i) {
-        var o = i("c86c")
-          , a = i("2ec5")
-          , r = i("0108")
-          , n = i("09b5")
-          , s = i("d68f")
-          , d = i("4dac");
-        t = o(!1);
-        var c = a(r)
-          , p = a(n)
-          , u = a(s)
-          , l = a(d);
-        t.push([e.i, '@charset "UTF-8";\n/**\n * 这里是uni-app内置的常用样式变量\n *\n * uni-app 官方扩展插件及插件市场（https://ext.dcloud.net.cn）上很多三方插件均使用了这些样式变量\n * 如果你是插件开发者，建议你使用scss预处理，并在插件代码中直接使用这些变量（无需 import 这个文件），方便用户通过搭积木的方式开发整体风格一致的App\n *\n */\n/**\n * 如果你是App开发者（插件使用者），你可以通过修改这些变量来定制自己的插件主题，实现自定义主题功能\n *\n * 如果你的项目同样使用了scss预处理，你也可以直接在你的 scss 代码中使用如下变量，同时无需 import 这个文件\n */\n/* 颜色变量 */\n/* 行为相关颜色 */\n/* 文字基本颜色 */\n/* 背景颜色 */\n/* 边框颜色 */\n/* 尺寸变量 */\n/* 文字尺寸 */\n/* 图片尺寸 */\n/* Border Radius */\n/* 水平间距 */\n/* 垂直间距 */\n/* 透明度 */\n/* 文章场景相关 */.order-page[data-v-7fe06c89]{background:#f8f8f8;padding:%?40?% %?30?% %?220?% %?30?%}.order-page .top-tips[data-v-7fe06c89]{background:#000;color:#fff;font-size:%?26?%;color:#fff;text-align:center;padding:%?12?%;margin:%?-40?% %?-30?% %?30?% %?-30?%}.order-page .order-group[data-v-7fe06c89]{box-shadow:0 0 %?40?% 0 rgba(0,0,0,.05);border-radius:%?20?%;background:#fff;position:relative;margin-bottom:%?30?%;overflow:hidden}.order-page .order-group.info-base .name[data-v-7fe06c89]{padding:%?40?%;background-image:linear-gradient(90deg,#f65e56,#fc9a69);text-align:center;font-size:%?34?%;color:#fff}.order-page .order-group.info-base .line[data-v-7fe06c89]{color:#f2f2f2;margin:%?-16?% %?20?% 0 %?20?%;font-size:%?30?%;height:%?32?%;line-height:%?32?%;white-space:nowrap;position:relative;text-align:center}.order-page .order-group.info-base .line[data-v-7fe06c89]:before{content:"";position:absolute;width:%?32?%;height:%?32?%;background:url(' + c + ') 50% no-repeat;background-size:100%;left:%?-36?%;top:50%;margin-top:%?-16?%;border-radius:100%}.order-page .order-group.info-base .line[data-v-7fe06c89]:after{content:"";position:absolute;width:%?32?%;height:%?32?%;background:url(' + p + ") 50% no-repeat;background-size:100%;right:%?-36?%;top:50%;margin-top:%?-16?%;border-radius:100%}.order-page .order-group.info-base .info[data-v-7fe06c89]{padding:0 %?40?% %?40?% %?40?%}.order-page .order-group.info-base .info uni-text[data-v-7fe06c89]{margin-top:%?30?%;font-size:%?24?%;color:#999;display:block}.order-page .order-group.info-base .info uni-view[data-v-7fe06c89]{font-size:%?28?%}.order-page .order-group.info-list[data-v-7fe06c89]{padding:0 %?30?%}.order-page .order-group.info-list .info-item[data-v-7fe06c89]{display:flex;justify-content:space-between;align-items:center;align-content:center;border-bottom:%?1?% #ebebeb solid;padding:%?40?% 0}.order-page .order-group.info-list .info-item[data-v-7fe06c89]:last-child{border:0}.order-page .order-group.info-list .info-item .ll[data-v-7fe06c89]{font-size:%?24?%;color:#999}.order-page .order-group.info-list .info-item .rr[data-v-7fe06c89]{font-size:%?32?%;text-align:right;width:calc(100% - %?140?%)}.order-page .order-group.info-list .info-item .rr .viewer-list[data-v-7fe06c89]{margin:%?10?% 0}.order-page .order-group.info-list .info-item .rr.remark[data-v-7fe06c89]{font-size:%?28?%}.order-page .order-group.info-list .info-item .rr.remark .remark-view[data-v-7fe06c89]{white-space:pre-wrap}.order-page .order-group.info-list .info-item .rr.remark uni-input[data-v-7fe06c89], .order-page .order-group.info-list .info-item .rr.remark uni-textarea[data-v-7fe06c89]{width:100%;font-size:%?28?%}.order-page .order-group.info-list .info-item .rr.remark .no-text[data-v-7fe06c89]{color:grey}.order-page .order-group.info-list .info-item .rr .o-input[data-v-7fe06c89]{display:flex;align-items:center;justify-content:flex-end}.order-page .order-group.info-list .info-item .rr .o-input uni-picker[data-v-7fe06c89]{margin-right:%?20?%;padding-right:%?20?%;border-right:%?1?% #ebebeb solid;line-height:%?20?%}.order-page .order-group.info-list .info-item .rr .o-input uni-input[data-v-7fe06c89]{text-align:left;width:%?240?%}.order-page .order-group.info-list .info-item .rr .o-input uni-image[data-v-7fe06c89]{width:%?150?%;height:%?60?%;margin-left:%?10?%}.order-page .order-group.info-list .info-item .rr .o-input .btn[data-v-7fe06c89]{color:#eb484a}.order-page .order-group.info-list .info-item .rr .o-input .btn.disabled[data-v-7fe06c89]{color:#999;font-size:%?28?%}.order-page .order-group.info-list .info-item .rr .tips[data-v-7fe06c89]{color:#999}.order-page .order-group.info-list .info-item .rr .msg[data-v-7fe06c89]{font-size:%?24?%;color:#999}.order-page .order-group.info-list .info-item.link-item .rr[data-v-7fe06c89]{margin-right:%?35?%}.order-page .order-group.info-list .info-item.goods-info[data-v-7fe06c89]{justify-content:flex-start;flex-wrap:nowrap}.order-page .order-group.info-list .info-item .goods-title[data-v-7fe06c89]{font-size:%?28?%}.order-page .order-group.info-list .info-item .goods-title .activity-name[data-v-7fe06c89]{overflow:hidden;text-overflow:ellipsis;margin-bottom:%?20?%;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;height:%?80?%;line-height:%?40?%}.order-page .order-group.info-list .info-item .goods-poster[data-v-7fe06c89]{width:%?150?%;height:%?150?%;margin:0 %?40?% 0 0;background:#f8f8f8;position:relative}.order-page .order-group.info-list .info-item .goods-poster .vip-icon[data-v-7fe06c89]{position:absolute;bottom:0;right:0;width:%?80?%;height:%?26?%;background:url(" + u + ') 50% no-repeat;background-size:100%}.order-page .order-group.info-list .info-item .goods-poster.raise-poster[data-v-7fe06c89]{width:%?210?%;margin:0 0 0 %?40?%}.order-page .order-group.info-list .info-item .goods-poster.activity-poster[data-v-7fe06c89]{width:%?150?%;height:%?200?%;border-radius:%?8?%;overflow:hidden;position:relative}.order-page .order-group.info-list .info-item .goods-poster uni-image[data-v-7fe06c89]{max-width:100%;max-height:100%}.order-page .order-group.info-list .info-item.ticket-item[data-v-7fe06c89]{display:block}.order-page .order-group.info-list .info-item.ticket-item .ticketInfo[data-v-7fe06c89]{font-size:%?28?%;margin-bottom:%?40?%}.order-page .order-group.info-list .info-item.ticket-item .ticketInfo .ll[data-v-7fe06c89]{margin-bottom:%?10?%}.order-page .order-group.info-list .info-item.ticket-item .ticketInfo[data-v-7fe06c89]:last-child{margin-bottom:0}.order-page .order-group.info-list .info-item .ticketPrice[data-v-7fe06c89]{font-size:%?68?%}.order-page .order-group.info-list .info-item .ticketPrice uni-text[data-v-7fe06c89]{font-size:%?28?%}.order-page .order-group.info-detail[data-v-7fe06c89]{padding:0 %?30?%}.order-page .order-group.info-detail .info-item[data-v-7fe06c89]{flex-wrap:wrap}.order-page .order-group.info-detail .o-info[data-v-7fe06c89]{padding:%?30?% 0}.order-page .order-group.info-detail .o-info .o-item[data-v-7fe06c89]{width:100%;display:flex;justify-content:space-between;align-items:center;padding:%?15?% 0}.order-page .order-group.info-detail .o-info .o-item .ll[data-v-7fe06c89]{font-size:%?24?%;color:#999}.order-page .order-group.info-detail .o-info .o-item .rr[data-v-7fe06c89]{font-size:%?28?%;max-width:60%}.order-page .order-group.info-detail .o-info .o-item .rr.payMoney[data-v-7fe06c89]{font-size:%?36?%}.order-page .order-group.info-detail .o-info .o-item.link-item .rr[data-v-7fe06c89]{margin-right:%?35?%}.order-page .tips[data-v-7fe06c89]{font-size:%?24?%;color:#999;line-height:%?42?%}.order-page .service[data-v-7fe06c89]{font-size:%?24?%;color:#999;padding:%?30?% 0;border-top:%?1?% #ebebeb solid;margin-top:%?30?%}.order-page .link-item[data-v-7fe06c89]{position:relative}.order-page .link-item[data-v-7fe06c89]:after{content:"";position:absolute;width:%?35?%;height:%?34?%;background:url(' + l + ") 50% no-repeat;background-size:100%;top:50%;margin-top:%?-17?%;right:%?-5?%}.order-page .footer-bar[data-v-7fe06c89]{position:fixed;width:100%;left:0;bottom:0;z-index:99;background:#fff}.order-page .footer-bar .tips[data-v-7fe06c89]{padding:%?15?%;background:#fff;color:#999;font-size:%?24?%;line-height:normal;display:flex;justify-content:center}.order-page .footer-bar .payBtn[data-v-7fe06c89]{text-align:center;font-size:%?32?%;font-weight:500;background:linear-gradient(270deg,#eb484a,#fd5f26);box-shadow:0 5px 10px 0 rgba(248,89,47,.1);color:#fff;height:%?90?%;line-height:%?90?%;position:relative;border-radius:%?45?%;margin:0 %?20?%}.order-page .footer-bar .payBtn.disabled[data-v-7fe06c89]{background:#ebebeb;color:#333}.order-page .pop-box[data-v-7fe06c89], .order-page .coupon-pop-box[data-v-7fe06c89]{flex:1;padding:0 %?40?%;display:block;position:relative}.order-page .pop-box .pop-head[data-v-7fe06c89], .order-page .coupon-pop-box .pop-head[data-v-7fe06c89]{display:flex;justify-content:space-between}.order-page .pop-box .pop-head .cancel[data-v-7fe06c89], .order-page .coupon-pop-box .pop-head .cancel[data-v-7fe06c89]{color:#999}.order-page .pop-box .pop-content .viewerTotal[data-v-7fe06c89],\n.order-page .pop-box .pop-content .warning[data-v-7fe06c89],\n.order-page .coupon-pop-box .pop-content .viewerTotal[data-v-7fe06c89],\n.order-page .coupon-pop-box .pop-content .warning[data-v-7fe06c89]{text-align:left;color:#eb484a;line-height:normal;font-size:%?24?%}.order-page .pop-box .pop-content .tips[data-v-7fe06c89], .order-page .coupon-pop-box .pop-content .tips[data-v-7fe06c89]{padding:%?60?% 0}.order-page .pop-box .pop-content .list-wrap[data-v-7fe06c89], .order-page .coupon-pop-box .pop-content .list-wrap[data-v-7fe06c89]{max-height:%?800?%}.order-page .pop-box .pop-content .list-wrap uni-label[data-v-7fe06c89], .order-page .coupon-pop-box .pop-content .list-wrap uni-label[data-v-7fe06c89]{display:flex;justify-content:space-between;align-items:center;border-top:%?1?% #ebebeb solid;line-height:normal;text-align:left;padding:%?20?% 0}.order-page .pop-box .pop-content .list-wrap uni-label .name[data-v-7fe06c89], .order-page .coupon-pop-box .pop-content .list-wrap uni-label .name[data-v-7fe06c89]{font-size:%?28?%}.order-page .pop-box .pop-content .list-wrap uni-label .addr[data-v-7fe06c89], .order-page .coupon-pop-box .pop-content .list-wrap uni-label .addr[data-v-7fe06c89]{font-size:%?24?%;color:#999}.order-page .pop-box .pop-bottom[data-v-7fe06c89], .order-page .coupon-pop-box .pop-bottom[data-v-7fe06c89]{margin:0 %?-40?%;border-top:%?1?% #ebebeb solid}.order-page .pop-box .pop-bottom .btn[data-v-7fe06c89], .order-page .coupon-pop-box .pop-bottom .btn[data-v-7fe06c89]{height:%?100?%;line-height:%?100?%;color:#eb484a;font-size:%?32?%;text-align:center}.order-page .coupon-pop-box[data-v-7fe06c89]{background:#f8f8f8}", ""]),
-        e.exports = t
-    },
-    "4c47": function(e, t, i) {
-        var o = i("1708");
-        o.__esModule && (o = o.default),
-        "string" === typeof o && (o = [[e.i, o, ""]]),
-        o.locals && (e.exports = o.locals);
-        var a = i("967d").default;
-        a("020ad823", o, !0, {
-            sourceMap: !1,
-            shadowMode: !1
-        })
+    "286e": function(e, t, i) {
+        "use strict";
+        var o = i("6e0f")
+          , a = i.n(o);
+        a.a
     },
     "4dac": function(e, t) {
         e.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADUAAAAzCAMAAAAAYbBfAAAAM1BMVEUAAADj4+Pd3d3e3t7e3t7e3t7f39/e3t7f39/i4uLc3Nzd3d3d3d3e3t7f39/d3d3d3d1ArkRtAAAAEHRSTlMAJOQPyoNY9D8sHeq12a14fPQ+uQAAAFBJREFUSMfty0kSgCAMBMBgVFxQ8//XauUHGQsOMH1voQ5sCUl5SkAyCzf9EtBWY2Mbud3eSiwtnvLRKl1ImpWJ6Ud6kCT7CSRvnqKtqFBlL30gDAMy+ta2AAAAAElFTkSuQmCC"
     },
-    5425: function(e, t, i) {
-        var o = i("a687");
+    "52cd": function(e, t, i) {
+        var o = i("fa2e");
         o.__esModule && (o = o.default),
         "string" === typeof o && (o = [[e.i, o, ""]]),
         o.locals && (e.exports = o.locals);
         var a = i("967d").default;
-        a("6e8cc8b8", o, !0, {
+        a("7eea1e00", o, !0, {
             sourceMap: !1,
             shadowMode: !1
         })
     },
-    83873: function(e, t, i) {
+    "6e0f": function(e, t, i) {
+        var o = i("eae3");
+        o.__esModule && (o = o.default),
+        "string" === typeof o && (o = [[e.i, o, ""]]),
+        o.locals && (e.exports = o.locals);
+        var a = i("967d").default;
+        a("f18c96fe", o, !0, {
+            sourceMap: !1,
+            shadowMode: !1
+        })
+    },
+    "75e9": function(e, t, i) {
         "use strict";
-        var o = i("4c47")
+        var o = i("52cd")
           , a = i.n(o);
         a.a
     },
     a57e: function(e, t, i) {
         "use strict";
         i.r(t);
-        var o = i("c93c")
+        var o = i("db1c")
           , a = i("ec6a");
         for (var r in a)
             ["default"].indexOf(r) < 0 && function(e) {
@@ -195,19 +204,16 @@
                 }
                 ))
             }(r);
-        i("83873"),
-        i("d98a");
+        i("75e9"),
+        i("286e");
         var n = i("828b")
-          , s = Object(n["a"])(a["default"], o["b"], o["c"], !1, null, "7fe06c89", null, !1, o["a"], void 0);
+          , s = Object(n["a"])(a["default"], o["b"], o["c"], !1, null, "536e49e8", null, !1, o["a"], void 0);
         t["default"] = s.exports
     },
-    a687: function(e, t, i) {
-        var o = i("c86c");
-        t = o(!1),
-        t.push([e.i, '@charset "UTF-8";\n/**\n * 这里是uni-app内置的常用样式变量\n *\n * uni-app 官方扩展插件及插件市场（https://ext.dcloud.net.cn）上很多三方插件均使用了这些样式变量\n * 如果你是插件开发者，建议你使用scss预处理，并在插件代码中直接使用这些变量（无需 import 这个文件），方便用户通过搭积木的方式开发整体风格一致的App\n *\n */\n/**\n * 如果你是App开发者（插件使用者），你可以通过修改这些变量来定制自己的插件主题，实现自定义主题功能\n *\n * 如果你的项目同样使用了scss预处理，你也可以直接在你的 scss 代码中使用如下变量，同时无需 import 这个文件\n */\n/* 颜色变量 */\n/* 行为相关颜色 */\n/* 文字基本颜色 */\n/* 背景颜色 */\n/* 边框颜色 */\n/* 尺寸变量 */\n/* 文字尺寸 */\n/* 图片尺寸 */\n/* Border Radius */\n/* 水平间距 */\n/* 垂直间距 */\n/* 透明度 */\n/* 文章场景相关 */.coupons-list[data-v-7fe06c89]{padding:%?10?% 0 %?50?%;max-height:%?1000?%;min-height:%?700?%;overflow-y:auto}.authInfo[data-v-7fe06c89]{text-align:left;line-height:normal;margin-top:%?20?%;font-size:%?24?%}', ""]),
-        e.exports = t
+    d68f: function(e, t) {
+        e.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAAAaCAMAAAAXDCuVAAACE1BMVEUAAAD/6Lz/6Lz/6Lv/6b3/6L3/6bz/677/6bz//7//6bz/4bT/6Lz/6Lz/6b3/6b3/6rz/6Lr/7b//67r/6r0WFhb/6Lw5NS8YFxckIh6ykWJfWEkiIB795rmHb001LycmIx/85Lf64LLv2rDZr3Q+OjI8ODA+Nyzn0aqQhG22lGN+aEhEQDcsJyD34bammH2gjW6Edl50alZkXE01MSswLScvKiP74rT43q/izqftzpvfuoOtkWekjGebgVyCc1p2bVqcf1ZhWUppWkNkVkFVSDYhHx3x1KO1pofPsYTWtIDEo3TVrHO6nXLCoXHDnmqdimqAcViBcFZoYE9jWktjVD5MRTlKQDJIPS48NSofHRreyJ/WvZPfwpLTuY7KsorkwIjIr4bivIXUr3qznXrFpnixm3eulnGwlm/Npm6bhWSAdmKujV+Lck9bTDlCPDL326zo0KbgyqPs0aLZvI7lwozRtorZt4SxooTHq4DBqIC4o3+7onvHoWzAnGiylGeSgmahiWSwkGCliF2hhVyYgFx6cFyJd1qXfViUeVVsYlGOdFBpXUpzYklYUURZUEFtWkBQSDpPQjI6Mynz3bL016bVw57cxZzgxJbSu5Tpx5K/ro2yoYPQrn3bsXaqlnXOp3GUh2+zl26Uhm6nkGyxk2ewkme7mGa6l2Wmh1uNelt0Z1J+a1B3Y0VzYERgUj5UTD7PLHTeAAAAFXRSTlMAvvjmvJOBMy4E+xHy5Laaa04cGm2ZVR3eAAADEklEQVRIx62VZ1caQRiFAUvsNfOCoisIChixQwxoEBMEAgqBgGLvxt57ib1rNKb33ttPzA677C4nJ18kzxfO3QOXu3Nn5uUFiIrkhwngXAjC+JFRvGAuhEOIhF/g2EVHAMgKxcIMdC4yhOJCGUBEdMAvlg8FqjQUEmmqAuDH0vn4oMxHIZOvBD6VMQKUGsRSY6pB/6TxUMOVotwcVmiUEOHvAwryuX7r8nXG8WpdXZ3N1tOzhmjqdaeMF0nOk/HRHIzIn7EAcDPhoEIs6vQVxUqemlYfPl7DvK3FQtHX1zevW+rt7e3u/o0yxsbKy7OzL0szMwGAqlMF4eT+Axmnj/plhxZpHcsNlLyzm4bZ8hueDQw4p1qcziISLxIJc26RlGJGc0VUMzKI4kVCIVvVsHxIQn5KhuREjd9Qr+/sbG+frkU0U07EUIYD+hMKEU0hRPL4IA7Ie/124+c8zKcN+WscUptFocXhrVbrjK5lprW1tbm52YsN3UKSXDdrKAY+L4yV6i9Z6ksUWt8GuRB7XV1dN0hmZwcQynK5XEu6HYOhGFNGJ8QBWQchhPEE8Pf5YEv2eK5jeiqpBwsLiMUrxlST5DNnBgRBhifpDHk/sWEFGbt2FKHblKFG19LR0dHW1laC1TgOKMUdW1AAAO4rIxNB7MmHCII4IIgR2rC+XcEYKm6SGAyLD/axEmEk2w8txyJuQlwKh4N+smbjJvkV2vC7XkQZMtydLMLLVYKpkilVVSS5gTWMp7cNU7QcJ/PZh/1qqwKlvahUKNCOC/kxdH87WzWv4r+rftTU1DQxIZVdwZQiP25ICN7Yin5jg8nzY9jx0kMd3RGb3rc2bf3qo8MVPTabFyWcw3x/EHGYg6Tgo2eUy+2OdCNxsmsnf7Vp03dWKMhejuafvg84nL4yTx7S4vj5s8x9xFImjUkJvhwk6kb6VsHb+teRKRDG5EUM2uLAU827N9sixGKBRM71FTqDEJfKuWBD98uMSQ55BLCUWSDmYqhDip1S7jkpxCX/1zEak5hKe4U+6EEQn5CUQvv8AX+CD/2qo9oKAAAAAElFTkSuQmCC"
     },
-    c93c: function(e, t, i) {
+    db1c: function(e, t, i) {
         "use strict";
         i.d(t, "b", (function() {
             return a
@@ -646,14 +652,11 @@
         }
           , r = []
     },
-    d68f: function(e, t) {
-        e.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAAAaCAMAAAAXDCuVAAACE1BMVEUAAAD/6Lz/6Lz/6Lv/6b3/6L3/6bz/677/6bz//7//6bz/4bT/6Lz/6Lz/6b3/6b3/6rz/6Lr/7b//67r/6r0WFhb/6Lw5NS8YFxckIh6ykWJfWEkiIB795rmHb001LycmIx/85Lf64LLv2rDZr3Q+OjI8ODA+Nyzn0aqQhG22lGN+aEhEQDcsJyD34bammH2gjW6Edl50alZkXE01MSswLScvKiP74rT43q/izqftzpvfuoOtkWekjGebgVyCc1p2bVqcf1ZhWUppWkNkVkFVSDYhHx3x1KO1pofPsYTWtIDEo3TVrHO6nXLCoXHDnmqdimqAcViBcFZoYE9jWktjVD5MRTlKQDJIPS48NSofHRreyJ/WvZPfwpLTuY7KsorkwIjIr4bivIXUr3qznXrFpnixm3eulnGwlm/Npm6bhWSAdmKujV+Lck9bTDlCPDL326zo0KbgyqPs0aLZvI7lwozRtorZt4SxooTHq4DBqIC4o3+7onvHoWzAnGiylGeSgmahiWSwkGCliF2hhVyYgFx6cFyJd1qXfViUeVVsYlGOdFBpXUpzYklYUURZUEFtWkBQSDpPQjI6Mynz3bL016bVw57cxZzgxJbSu5Tpx5K/ro2yoYPQrn3bsXaqlnXOp3GUh2+zl26Uhm6nkGyxk2ewkme7mGa6l2Wmh1uNelt0Z1J+a1B3Y0VzYERgUj5UTD7PLHTeAAAAFXRSTlMAvvjmvJOBMy4E+xHy5Laaa04cGm2ZVR3eAAADEklEQVRIx62VZ1caQRiFAUvsNfOCoisIChixQwxoEBMEAgqBgGLvxt57ib1rNKb33ttPzA677C4nJ18kzxfO3QOXu3Nn5uUFiIrkhwngXAjC+JFRvGAuhEOIhF/g2EVHAMgKxcIMdC4yhOJCGUBEdMAvlg8FqjQUEmmqAuDH0vn4oMxHIZOvBD6VMQKUGsRSY6pB/6TxUMOVotwcVmiUEOHvAwryuX7r8nXG8WpdXZ3N1tOzhmjqdaeMF0nOk/HRHIzIn7EAcDPhoEIs6vQVxUqemlYfPl7DvK3FQtHX1zevW+rt7e3u/o0yxsbKy7OzL0szMwGAqlMF4eT+Axmnj/plhxZpHcsNlLyzm4bZ8hueDQw4p1qcziISLxIJc26RlGJGc0VUMzKI4kVCIVvVsHxIQn5KhuREjd9Qr+/sbG+frkU0U07EUIYD+hMKEU0hRPL4IA7Ie/124+c8zKcN+WscUptFocXhrVbrjK5lprW1tbm52YsN3UKSXDdrKAY+L4yV6i9Z6ksUWt8GuRB7XV1dN0hmZwcQynK5XEu6HYOhGFNGJ8QBWQchhPEE8Pf5YEv2eK5jeiqpBwsLiMUrxlST5DNnBgRBhifpDHk/sWEFGbt2FKHblKFG19LR0dHW1laC1TgOKMUdW1AAAO4rIxNB7MmHCII4IIgR2rC+XcEYKm6SGAyLD/axEmEk2w8txyJuQlwKh4N+smbjJvkV2vC7XkQZMtydLMLLVYKpkilVVSS5gTWMp7cNU7QcJ/PZh/1qqwKlvahUKNCOC/kxdH87WzWv4r+rftTU1DQxIZVdwZQiP25ICN7Yin5jg8nzY9jx0kMd3RGb3rc2bf3qo8MVPTabFyWcw3x/EHGYg6Tgo2eUy+2OdCNxsmsnf7Vp03dWKMhejuafvg84nL4yTx7S4vj5s8x9xFImjUkJvhwk6kb6VsHb+teRKRDG5EUM2uLAU827N9sixGKBRM71FTqDEJfKuWBD98uMSQ55BLCUWSDmYqhDip1S7jkpxCX/1zEak5hKe4U+6EEQn5CUQvv8AX+CD/2qo9oKAAAAAElFTkSuQmCC"
-    },
-    d98a: function(e, t, i) {
-        "use strict";
-        var o = i("5425")
-          , a = i.n(o);
-        a.a
+    eae3: function(e, t, i) {
+        var o = i("c86c");
+        t = o(!1),
+        t.push([e.i, '@charset "UTF-8";\n/**\n * 这里是uni-app内置的常用样式变量\n *\n * uni-app 官方扩展插件及插件市场（https://ext.dcloud.net.cn）上很多三方插件均使用了这些样式变量\n * 如果你是插件开发者，建议你使用scss预处理，并在插件代码中直接使用这些变量（无需 import 这个文件），方便用户通过搭积木的方式开发整体风格一致的App\n *\n */\n/**\n * 如果你是App开发者（插件使用者），你可以通过修改这些变量来定制自己的插件主题，实现自定义主题功能\n *\n * 如果你的项目同样使用了scss预处理，你也可以直接在你的 scss 代码中使用如下变量，同时无需 import 这个文件\n */\n/* 颜色变量 */\n/* 行为相关颜色 */\n/* 文字基本颜色 */\n/* 背景颜色 */\n/* 边框颜色 */\n/* 尺寸变量 */\n/* 文字尺寸 */\n/* 图片尺寸 */\n/* Border Radius */\n/* 水平间距 */\n/* 垂直间距 */\n/* 透明度 */\n/* 文章场景相关 */.coupons-list[data-v-536e49e8]{padding:%?10?% 0 %?50?%;max-height:%?1000?%;min-height:%?700?%;overflow-y:auto}.authInfo[data-v-536e49e8]{text-align:left;line-height:normal;margin-top:%?20?%;font-size:%?24?%}', ""]),
+        e.exports = t
     },
     ec6a: function(e, t, i) {
         "use strict";
@@ -1071,7 +1074,7 @@
                             secret: !0,
                             success: function(e) {
                                 var i = e.data.result
-                                  , o = i.couponList;
+                                  , o = i && i.canUseNum > 0 && i.couponList ? i.couponList : [];
                                 t.couponList.length > 0 && (o = o.filter((function(e) {
                                     return e.id != t.couponList[t.couponIndex].id
                                 }
@@ -1150,7 +1153,7 @@
                     getoken: function() {
                         var e = this
                           , t = "";
-                        4 == this.orderInfo.validateType ? (t = this.$util.uuid(16),
+                        3 == this.orderInfo.validateType || 4 == this.orderInfo.validateType ? (t = this.$util.uuid(16),
                         uni.showLoading({
                             title: "加载中",
                             mask: !0
@@ -1216,5 +1219,20 @@
             t.default = c
         }
         ).call(this, i("ba7c")["default"])
+    },
+    fa2e: function(e, t, i) {
+        var o = i("c86c")
+          , a = i("2ec5")
+          , r = i("0108")
+          , n = i("09b5")
+          , s = i("d68f")
+          , d = i("4dac");
+        t = o(!1);
+        var c = a(r)
+          , p = a(n)
+          , u = a(s)
+          , l = a(d);
+        t.push([e.i, '@charset "UTF-8";\n/**\n * 这里是uni-app内置的常用样式变量\n *\n * uni-app 官方扩展插件及插件市场（https://ext.dcloud.net.cn）上很多三方插件均使用了这些样式变量\n * 如果你是插件开发者，建议你使用scss预处理，并在插件代码中直接使用这些变量（无需 import 这个文件），方便用户通过搭积木的方式开发整体风格一致的App\n *\n */\n/**\n * 如果你是App开发者（插件使用者），你可以通过修改这些变量来定制自己的插件主题，实现自定义主题功能\n *\n * 如果你的项目同样使用了scss预处理，你也可以直接在你的 scss 代码中使用如下变量，同时无需 import 这个文件\n */\n/* 颜色变量 */\n/* 行为相关颜色 */\n/* 文字基本颜色 */\n/* 背景颜色 */\n/* 边框颜色 */\n/* 尺寸变量 */\n/* 文字尺寸 */\n/* 图片尺寸 */\n/* Border Radius */\n/* 水平间距 */\n/* 垂直间距 */\n/* 透明度 */\n/* 文章场景相关 */.order-page[data-v-536e49e8]{background:#f8f8f8;padding:%?40?% %?30?% %?220?% %?30?%}.order-page .top-tips[data-v-536e49e8]{background:#000;color:#fff;font-size:%?26?%;color:#fff;text-align:center;padding:%?12?%;margin:%?-40?% %?-30?% %?30?% %?-30?%}.order-page .order-group[data-v-536e49e8]{box-shadow:0 0 %?40?% 0 rgba(0,0,0,.05);border-radius:%?20?%;background:#fff;position:relative;margin-bottom:%?30?%;overflow:hidden}.order-page .order-group.info-base .name[data-v-536e49e8]{padding:%?40?%;background-image:linear-gradient(90deg,#f65e56,#fc9a69);text-align:center;font-size:%?34?%;color:#fff}.order-page .order-group.info-base .line[data-v-536e49e8]{color:#f2f2f2;margin:%?-16?% %?20?% 0 %?20?%;font-size:%?30?%;height:%?32?%;line-height:%?32?%;white-space:nowrap;position:relative;text-align:center}.order-page .order-group.info-base .line[data-v-536e49e8]:before{content:"";position:absolute;width:%?32?%;height:%?32?%;background:url(' + c + ') 50% no-repeat;background-size:100%;left:%?-36?%;top:50%;margin-top:%?-16?%;border-radius:100%}.order-page .order-group.info-base .line[data-v-536e49e8]:after{content:"";position:absolute;width:%?32?%;height:%?32?%;background:url(' + p + ") 50% no-repeat;background-size:100%;right:%?-36?%;top:50%;margin-top:%?-16?%;border-radius:100%}.order-page .order-group.info-base .info[data-v-536e49e8]{padding:0 %?40?% %?40?% %?40?%}.order-page .order-group.info-base .info uni-text[data-v-536e49e8]{margin-top:%?30?%;font-size:%?24?%;color:#999;display:block}.order-page .order-group.info-base .info uni-view[data-v-536e49e8]{font-size:%?28?%}.order-page .order-group.info-list[data-v-536e49e8]{padding:0 %?30?%}.order-page .order-group.info-list .info-item[data-v-536e49e8]{display:flex;justify-content:space-between;align-items:center;align-content:center;border-bottom:%?1?% #ebebeb solid;padding:%?40?% 0}.order-page .order-group.info-list .info-item[data-v-536e49e8]:last-child{border:0}.order-page .order-group.info-list .info-item .ll[data-v-536e49e8]{font-size:%?24?%;color:#999}.order-page .order-group.info-list .info-item .rr[data-v-536e49e8]{font-size:%?32?%;text-align:right;width:calc(100% - %?140?%)}.order-page .order-group.info-list .info-item .rr .viewer-list[data-v-536e49e8]{margin:%?10?% 0}.order-page .order-group.info-list .info-item .rr.remark[data-v-536e49e8]{font-size:%?28?%}.order-page .order-group.info-list .info-item .rr.remark .remark-view[data-v-536e49e8]{white-space:pre-wrap}.order-page .order-group.info-list .info-item .rr.remark uni-input[data-v-536e49e8], .order-page .order-group.info-list .info-item .rr.remark uni-textarea[data-v-536e49e8]{width:100%;font-size:%?28?%}.order-page .order-group.info-list .info-item .rr.remark .no-text[data-v-536e49e8]{color:grey}.order-page .order-group.info-list .info-item .rr .o-input[data-v-536e49e8]{display:flex;align-items:center;justify-content:flex-end}.order-page .order-group.info-list .info-item .rr .o-input uni-picker[data-v-536e49e8]{margin-right:%?20?%;padding-right:%?20?%;border-right:%?1?% #ebebeb solid;line-height:%?20?%}.order-page .order-group.info-list .info-item .rr .o-input uni-input[data-v-536e49e8]{text-align:left;width:%?240?%}.order-page .order-group.info-list .info-item .rr .o-input uni-image[data-v-536e49e8]{width:%?150?%;height:%?60?%;margin-left:%?10?%}.order-page .order-group.info-list .info-item .rr .o-input .btn[data-v-536e49e8]{color:#eb484a}.order-page .order-group.info-list .info-item .rr .o-input .btn.disabled[data-v-536e49e8]{color:#999;font-size:%?28?%}.order-page .order-group.info-list .info-item .rr .tips[data-v-536e49e8]{color:#999}.order-page .order-group.info-list .info-item .rr .msg[data-v-536e49e8]{font-size:%?24?%;color:#999}.order-page .order-group.info-list .info-item.link-item .rr[data-v-536e49e8]{margin-right:%?35?%}.order-page .order-group.info-list .info-item.goods-info[data-v-536e49e8]{justify-content:flex-start;flex-wrap:nowrap}.order-page .order-group.info-list .info-item .goods-title[data-v-536e49e8]{font-size:%?28?%}.order-page .order-group.info-list .info-item .goods-title .activity-name[data-v-536e49e8]{overflow:hidden;text-overflow:ellipsis;margin-bottom:%?20?%;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;height:%?80?%;line-height:%?40?%}.order-page .order-group.info-list .info-item .goods-poster[data-v-536e49e8]{width:%?150?%;height:%?150?%;margin:0 %?40?% 0 0;background:#f8f8f8;position:relative}.order-page .order-group.info-list .info-item .goods-poster .vip-icon[data-v-536e49e8]{position:absolute;bottom:0;right:0;width:%?80?%;height:%?26?%;background:url(" + u + ') 50% no-repeat;background-size:100%}.order-page .order-group.info-list .info-item .goods-poster.raise-poster[data-v-536e49e8]{width:%?210?%;margin:0 0 0 %?40?%}.order-page .order-group.info-list .info-item .goods-poster.activity-poster[data-v-536e49e8]{width:%?150?%;height:%?200?%;border-radius:%?8?%;overflow:hidden;position:relative}.order-page .order-group.info-list .info-item .goods-poster uni-image[data-v-536e49e8]{max-width:100%;max-height:100%}.order-page .order-group.info-list .info-item.ticket-item[data-v-536e49e8]{display:block}.order-page .order-group.info-list .info-item.ticket-item .ticketInfo[data-v-536e49e8]{font-size:%?28?%;margin-bottom:%?40?%}.order-page .order-group.info-list .info-item.ticket-item .ticketInfo .ll[data-v-536e49e8]{margin-bottom:%?10?%}.order-page .order-group.info-list .info-item.ticket-item .ticketInfo[data-v-536e49e8]:last-child{margin-bottom:0}.order-page .order-group.info-list .info-item .ticketPrice[data-v-536e49e8]{font-size:%?68?%}.order-page .order-group.info-list .info-item .ticketPrice uni-text[data-v-536e49e8]{font-size:%?28?%}.order-page .order-group.info-detail[data-v-536e49e8]{padding:0 %?30?%}.order-page .order-group.info-detail .info-item[data-v-536e49e8]{flex-wrap:wrap}.order-page .order-group.info-detail .o-info[data-v-536e49e8]{padding:%?30?% 0}.order-page .order-group.info-detail .o-info .o-item[data-v-536e49e8]{width:100%;display:flex;justify-content:space-between;align-items:center;padding:%?15?% 0}.order-page .order-group.info-detail .o-info .o-item .ll[data-v-536e49e8]{font-size:%?24?%;color:#999}.order-page .order-group.info-detail .o-info .o-item .rr[data-v-536e49e8]{font-size:%?28?%;max-width:60%}.order-page .order-group.info-detail .o-info .o-item .rr.payMoney[data-v-536e49e8]{font-size:%?36?%}.order-page .order-group.info-detail .o-info .o-item.link-item .rr[data-v-536e49e8]{margin-right:%?35?%}.order-page .tips[data-v-536e49e8]{font-size:%?24?%;color:#999;line-height:%?42?%}.order-page .service[data-v-536e49e8]{font-size:%?24?%;color:#999;padding:%?30?% 0;border-top:%?1?% #ebebeb solid;margin-top:%?30?%}.order-page .link-item[data-v-536e49e8]{position:relative}.order-page .link-item[data-v-536e49e8]:after{content:"";position:absolute;width:%?35?%;height:%?34?%;background:url(' + l + ") 50% no-repeat;background-size:100%;top:50%;margin-top:%?-17?%;right:%?-5?%}.order-page .footer-bar[data-v-536e49e8]{position:fixed;width:100%;left:0;bottom:0;z-index:99;background:#fff}.order-page .footer-bar .tips[data-v-536e49e8]{padding:%?15?%;background:#fff;color:#999;font-size:%?24?%;line-height:normal;display:flex;justify-content:center}.order-page .footer-bar .payBtn[data-v-536e49e8]{text-align:center;font-size:%?32?%;font-weight:500;background:linear-gradient(270deg,#eb484a,#fd5f26);box-shadow:0 5px 10px 0 rgba(248,89,47,.1);color:#fff;height:%?90?%;line-height:%?90?%;position:relative;border-radius:%?45?%;margin:0 %?20?%}.order-page .footer-bar .payBtn.disabled[data-v-536e49e8]{background:#ebebeb;color:#333}.order-page .pop-box[data-v-536e49e8], .order-page .coupon-pop-box[data-v-536e49e8]{flex:1;padding:0 %?40?%;display:block;position:relative}.order-page .pop-box .pop-head[data-v-536e49e8], .order-page .coupon-pop-box .pop-head[data-v-536e49e8]{display:flex;justify-content:space-between}.order-page .pop-box .pop-head .cancel[data-v-536e49e8], .order-page .coupon-pop-box .pop-head .cancel[data-v-536e49e8]{color:#999}.order-page .pop-box .pop-content .viewerTotal[data-v-536e49e8],\n.order-page .pop-box .pop-content .warning[data-v-536e49e8],\n.order-page .coupon-pop-box .pop-content .viewerTotal[data-v-536e49e8],\n.order-page .coupon-pop-box .pop-content .warning[data-v-536e49e8]{text-align:left;color:#eb484a;line-height:normal;font-size:%?24?%}.order-page .pop-box .pop-content .tips[data-v-536e49e8], .order-page .coupon-pop-box .pop-content .tips[data-v-536e49e8]{padding:%?60?% 0}.order-page .pop-box .pop-content .list-wrap[data-v-536e49e8], .order-page .coupon-pop-box .pop-content .list-wrap[data-v-536e49e8]{max-height:%?800?%}.order-page .pop-box .pop-content .list-wrap uni-label[data-v-536e49e8], .order-page .coupon-pop-box .pop-content .list-wrap uni-label[data-v-536e49e8]{display:flex;justify-content:space-between;align-items:center;border-top:%?1?% #ebebeb solid;line-height:normal;text-align:left;padding:%?20?% 0}.order-page .pop-box .pop-content .list-wrap uni-label .name[data-v-536e49e8], .order-page .coupon-pop-box .pop-content .list-wrap uni-label .name[data-v-536e49e8]{font-size:%?28?%}.order-page .pop-box .pop-content .list-wrap uni-label .addr[data-v-536e49e8], .order-page .coupon-pop-box .pop-content .list-wrap uni-label .addr[data-v-536e49e8]{font-size:%?24?%;color:#999}.order-page .pop-box .pop-bottom[data-v-536e49e8], .order-page .coupon-pop-box .pop-bottom[data-v-536e49e8]{margin:0 %?-40?%;border-top:%?1?% #ebebeb solid}.order-page .pop-box .pop-bottom .btn[data-v-536e49e8], .order-page .coupon-pop-box .pop-bottom .btn[data-v-536e49e8]{height:%?100?%;line-height:%?100?%;color:#eb484a;font-size:%?32?%;text-align:center}.order-page .coupon-pop-box[data-v-536e49e8]{background:#f8f8f8}", ""]),
+        e.exports = t
     }
 }]);
